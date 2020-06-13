@@ -90,10 +90,14 @@ if sequenceAfter2ndGridMove != "":
 else :
     sequenceAfter2ndGridMoveId = 0
 
+device.log(message='Got sequenceIds', message_type='success')
+
 # Get the current position for x and y from the config
 with open(configFileName, 'r') as f:
     configContents = json.load(f)
     f.close()
+
+device.log(message='Opened Config', message_type='success')
 
 # Parse the data into variables
 currentPositionXstr = str(configContents[evName]).split(",",-1)[0]
