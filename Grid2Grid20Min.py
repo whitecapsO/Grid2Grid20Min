@@ -155,22 +155,22 @@ for rowGrid1Index in range(rowsGrid1):
             if canMove:
                 device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
                 # Do the move and execute the sequence
-                # device.move_absolute(
-                #     {
-                #         'kind': 'coordinate',
-                #         'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': addToZHeightGrid1}
-                #     },
-                #     100,
-                #     {
-                #         'kind': 'coordinate',
-                #         'args': {'x': 0, 'y': 0, 'z': 0}
-                #     }
-                # )
+                device.move_absolute(
+                    {
+                        'kind': 'coordinate',
+                        'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': addToZHeightGrid1}
+                    },
+                    100,
+                    {
+                        'kind': 'coordinate',
+                        'args': {'x': 0, 'y': 0, 'z': 0}
+                    }
+                )
 
-                # # Run sequence after 1st grid move
-                # if sequenceAfter1stGridMove != "":
-                #     device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
-                #     device.execute(sequenceAfter1stGridMoveId)
+                # Run sequence after 1st grid move
+                if sequenceAfter1stGridMove != "":
+                    device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
+                    device.execute(sequenceAfter1stGridMoveId)
 
             if endLastRowGrid1 == 1:                                # If we should end the Farmware moves after the last row of grid one then set flaf
                 if ((alternateInBetweenGrid1 == 1)                  # Is alternateInBetween
@@ -209,17 +209,17 @@ for rowGrid1Index in range(rowsGrid1):
             device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
 
             # Do the move and execute the sequence
-            # device.move_absolute(
-            #     {
-            #         'kind': 'coordinate',
-            #         'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': addToZHeightGrid2}
-            #     },
-            #     100,
-            #     {
-            #         'kind': 'coordinate',
-            #         'args': {'x': 0, 'y': 0, 'z': 0}
-            #     }
-            # )
+            device.move_absolute(
+                {
+                    'kind': 'coordinate',
+                    'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': addToZHeightGrid2}
+                },
+                100,
+                {
+                    'kind': 'coordinate',
+                    'args': {'x': 0, 'y': 0, 'z': 0}
+                }
+            )
 
             # If endLastRowGrid1 and the moveBeforeLastMade has been set then record this as the last position and stop all future moves
             if moveBeforeLastMade:
@@ -231,10 +231,10 @@ for rowGrid1Index in range(rowsGrid1):
                     json.dump(configContents, f)
                     f.close()
 
-            # # Run sequence after 2nd grid move
-            # if sequenceAfter2ndGridMove != "":
-            #     device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
-            #     device.execute(sequenceAfter2ndGridMoveId)
+            # Run sequence after 2nd grid move
+            if sequenceAfter2ndGridMove != "":
+                device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
+                device.execute(sequenceAfter2ndGridMoveId)
 
         # Increment y column position for grid 1
         yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
