@@ -93,8 +93,6 @@ if sequenceAfter2ndGridMove != "":
 else :
     sequenceAfter2ndGridMoveId = 0
 
-device.log(message='Got sequenceIds', message_type='success')
-
 # Get the current position for x and y from the config
 with open(configFileName, 'r') as f:
     configContents = json.load(f)
@@ -125,6 +123,9 @@ for rowGrid1Index in range(rowsGrid1):
     yPosGrid1 = startYGrid1
 
     for colGrid1Index in range(colsGrid1):
+        device.log(message='Grid 1 row index: ' + str(rowGrid1Index) + ' Grid 1 col index:' + str(colGrid1Index), message_type='success')
+        device.log(message='Grid 2 row index: ' + str(rowGrid2Index) + ' Grid 2 col index:' + str(colGrid2Index), message_type='success')
+        
         # Set the x and y positions on the first grid if alternateInBetween assume the first 
         # column is not an alternateInBetween then odd numbered colums are
         if alternateInBetweenGrid1 == 1 :
@@ -135,6 +136,8 @@ for rowGrid1Index in range(rowsGrid1):
                 xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * rowGrid1Index)
         else :
             xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * rowGrid1Index)
+
+        device.log(message='Grid 1 x pos: ' + str(yPosGrid1) + ' Grid 1 y pos:' + str(xPosGrid1), message_type='success')
 
         # 1st grid move set the first grid row index back to zero if alternate inbetween column on last row let the loop handle the rest
         if ((alternateInBetweenGrid1 == 1)                  # Is alternateInBetween
@@ -174,8 +177,10 @@ for rowGrid1Index in range(rowsGrid1):
                 and (colGrid1Index > 0 and (colGrid1Index % 2) > 0) # is on an alternateInBetween odd numbered (offset) column  
                 and (rowGrid1Index >= rowsGrid1 - 2)) :             # is on the second to last row index as an alternateInBetween has 1 less row
                      moveBeforeLastMade = True
+                     device.log(message='moveBeforeLastMade = True', message_type='success')
                 elif rowGrid1Index >= (rowsGrid1 - 1) :             # else if on the last row
                      moveBeforeLastMade = True
+                     device.log(message='moveBeforeLastMade = True', message_type='success')
 
         # GRID 2
         #-------
@@ -191,6 +196,8 @@ for rowGrid1Index in range(rowsGrid1):
             xPosGrid2 = startXGrid2 + (spaceBetweenRowsGrid2 * rowGrid2Index)
         
         yPosGrid2 = startYGrid2 + (spaceBetweenColsGrid2 * colGrid2Index)
+
+        device.log(message='Grid 2 x pos: ' + str(yPosGrid2) + ' Grid 2 y pos:' + str(xPosGrid2), message_type='success')
 
         # Get the height additions for the Z axis if there is an x axis length and angle 
         if (begininingOfXGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
@@ -216,6 +223,7 @@ for rowGrid1Index in range(rowsGrid1):
 
             # If endLastRowGrid1 and the moveBeforeLastMade has been set then record this as the last position and stop all future moves
             if moveBeforeLastMade:
+                device.log(message='canMove = False', message_type='success')
                 canMove = False
                 os.remove(configFileName)                           # Write the current position of the 2nd grids x,y co-ordinates to the config
                 configContents = {evName: str(xPosGrid2) + "," + str(yPosGrid2)}
