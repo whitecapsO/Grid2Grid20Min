@@ -196,26 +196,26 @@ for rowGrid1Index in range(rowsGrid1):
             hypotenuseGrid2 = xPosGrid2 - begininingOfXGrid2
             addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
 
-            if canMove:
-                # Do the move and execute the sequence
-                device.move_absolute(
-                    {
-                        'kind': 'coordinate',
-                        'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': addToZHeightGrid2}
-                    },
-                    100,
-                    {
-                        'kind': 'coordinate',
-                        'args': {'x': 0, 'y': 0, 'z': 0}
-                    }
-                )
+        if canMove:
+            # Do the move and execute the sequence
+            device.move_absolute(
+                {
+                    'kind': 'coordinate',
+                    'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': addToZHeightGrid2}
+                },
+                100,
+                {
+                    'kind': 'coordinate',
+                    'args': {'x': 0, 'y': 0, 'z': 0}
+                }
+            )
 
-                # Run sequence after 2nd grid move
-                # if sequenceAfter2ndGridMove != "":
-                #     device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
-                #     device.execute(sequenceAfter2ndGridMoveId)
+            # Run sequence after 2nd grid move
+            # if sequenceAfter2ndGridMove != "":
+            #     device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
+            #     device.execute(sequenceAfter2ndGridMoveId)
 
-                secondGridHasMoved = True
+            secondGridHasMoved = True
 
         # Increment y column position for grid 1
         yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
