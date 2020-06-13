@@ -178,7 +178,7 @@ for rowGrid1Index in range(rowsGrid1):
                 and (rowGrid1Index >= rowsGrid1 - 2)) :             # is on the second to last row index as an alternateInBetween has 1 less row
                      moveBeforeLastMade = True
                      device.log(message='moveBeforeLastMade = True', message_type='success')
-                elif rowGrid1Index >= (rowsGrid1 - 1) :             # else if on the last row
+                elif (rowGrid1Index >= (rowsGrid1 - 1)) and (colGrid1Index >= (colsGrid1 - 1)) :    # else if on the last row and last column
                      moveBeforeLastMade = True
                      device.log(message='moveBeforeLastMade = True', message_type='success')
 
