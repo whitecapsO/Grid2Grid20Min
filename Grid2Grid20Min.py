@@ -5,7 +5,7 @@ from farmware_tools import get_config_value
 import json
 import os
 
-#TODO needs to work for first or second grid end of row have loop logic error
+#TODO implement endLastRowGrid2
 
 # TODO work out why it takes the Farmware librarys so long to load: 
 # https://forum.farmbot.org/t/farmware-moveabsolute-and-executesequence-not-working/5784/28
@@ -49,8 +49,8 @@ startZGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='star
 begininingOfXGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='begininingOfXGrid1', value_type=float)
 sineOfAngleXGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='sineOfAngleXGrid1', value_type=float)
 alternateInBetweenGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='alternateInBetweenGrid1', value_type=int)
-startLastRowOfGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startLastRowOfGrid1', value_type=int)
 sequenceAfter1stGridMove = get_config_value(farmware_name='Grid2Grid20Min', config_name='sequenceAfter1stGridMove', value_type=str)
+endLastRowGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='endLastRowGrid1', value_type=int)
 
 rowsGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='rowsGrid2', value_type=int)
 colsGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='colsGrid2', value_type=int)
@@ -63,6 +63,7 @@ begininingOfXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_nam
 sineOfAngleXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='sineOfAngleXGrid2', value_type=float)
 alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='alternateInBetweenGrid2', value_type=int)
 sequenceAfter2ndGridMove = get_config_value(farmware_name='Grid2Grid20Min', config_name='sequenceAfter2ndGridMove', value_type=str)
+endLastRowGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='endLastRowGrid2', value_type=int)
 
 # Set config file and environment variable names
 configFileName = '/tmp/farmware/config.json'
@@ -111,37 +112,29 @@ device.log(message='currentPositionXstr: ' + currentPositionXstr + ' currentPosi
 
 # Set the canMove and hasMoved flags
 canMove = False
-secondGridHasMoved = False
+moveBeforeLastMade = False
 if currentPositionX == 0 and currentPositionY == 0:
     canMove = True
     device.log(message='canMove = True', message_type='success')
 
 # Start the first grid movement
 for rowGrid1Index in range(rowsGrid1):
+    # GRID 1
+    #-------
     # Set first grids y position back to the first column
     yPosGrid1 = startYGrid1
 
     for colGrid1Index in range(colsGrid1):
         # Set the x and y positions on the first grid if alternateInBetween assume the first 
         # column is not an alternateInBetween then odd numbered colums are
-        # if startLastRowOfGrid1 then the x position starts on the last row and moves backwards
         if alternateInBetweenGrid1 == 1 :
             if colGrid1Index > 0 and (colGrid1Index % 2) > 0 :
                 device.log(message='Grid 1 alternateInBetween', message_type='success')
-                if startLastRowOfGrid1 == 1 :
-                    xPosGrid1 = startXGrid1 - (spaceBetweenRowsGrid1 * 0.5) - (spaceBetweenRowsGrid1 * rowGrid1Index)
-                else :
-                    xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * 0.5) + (spaceBetweenRowsGrid1 * rowGrid1Index)
-            else :
-                if startLastRowOfGrid1 == 1 :
-                    xPosGrid1 = startXGrid1 - (spaceBetweenRowsGrid1 * rowGrid1Index)
-                else :
-                    xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * rowGrid1Index)
-        else :
-            if startLastRowOfGrid1 == 1 :
-                xPosGrid1 = startXGrid1 - (spaceBetweenRowsGrid1 * rowGrid1Index)                    
+                xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * 0.5) + (spaceBetweenRowsGrid1 * rowGrid1Index)
             else :
                 xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * rowGrid1Index)
+        else :
+            xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * rowGrid1Index)
 
         # 1st grid move set the first grid row index back to zero if alternate inbetween column on last row let the loop handle the rest
         if ((alternateInBetweenGrid1 == 1)                  # Is alternateInBetween
@@ -151,32 +144,41 @@ for rowGrid1Index in range(rowsGrid1):
             yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
             device.log(message='Grid 1 alternateInBetween column last row so miss a row', message_type='success')
         else :
-            device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
-            
             # Get the height additions for the Z axis if there is an x axis length and angle 
             if (begininingOfXGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
                 hypotenuseGrid1 = xPosGrid1 - begininingOfXGrid1
                 addToZHeightGrid1 = sineOfAngleXGrid1 * hypotenuseGrid1
                 
             if canMove:
+                device.log('Grid 1 moving to ' + str(xPosGrid1) + ', ' + str(yPosGrid1) + ', ' + str(zPosGrid1), 'success', ['toast'])
                 # Do the move and execute the sequence
-                device.move_absolute(
-                    {
-                        'kind': 'coordinate',
-                        'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': addToZHeightGrid1}
-                    },
-                    100,
-                    {
-                        'kind': 'coordinate',
-                        'args': {'x': 0, 'y': 0, 'z': 0}
-                    }
-                )
+                # device.move_absolute(
+                #     {
+                #         'kind': 'coordinate',
+                #         'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': addToZHeightGrid1}
+                #     },
+                #     100,
+                #     {
+                #         'kind': 'coordinate',
+                #         'args': {'x': 0, 'y': 0, 'z': 0}
+                #     }
+                # )
 
-                # Run sequence after 1st grid move
-                if sequenceAfter1stGridMove != "":
-                    device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
-                    device.execute(sequenceAfter1stGridMoveId)
+                # # Run sequence after 1st grid move
+                # if sequenceAfter1stGridMove != "":
+                #     device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
+                #     device.execute(sequenceAfter1stGridMoveId)
 
+            if endLastRowGrid1 == 1:                                # If we should end the Farmware moves after the last row of grid one then set flaf
+                if ((alternateInBetweenGrid1 == 1)                  # Is alternateInBetween
+                and (colGrid1Index > 0 and (colGrid1Index % 2) > 0) # is on an alternateInBetween odd numbered (offset) column  
+                and (rowGrid1Index >= rowsGrid1 - 2)) :             # is on the second to last row index as an alternateInBetween has 1 less row
+                     moveBeforeLastMade = True
+                elif rowGrid1Index >= (rowsGrid1 - 1) :             # else if on the last row
+                     moveBeforeLastMade = True
+
+        # GRID 2
+        #-------
         # Set the x and y positions on the second grid if alternateInBetween assume the first 
         # column is not an alternateInBetween then odd numbered colums are
         if alternateInBetweenGrid2 == 1 :
@@ -190,34 +192,41 @@ for rowGrid1Index in range(rowsGrid1):
         
         yPosGrid2 = startYGrid2 + (spaceBetweenColsGrid2 * colGrid2Index)
 
-        # 2nd grid move
-        device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
-        
         # Get the height additions for the Z axis if there is an x axis length and angle 
         if (begininingOfXGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
             hypotenuseGrid2 = xPosGrid2 - begininingOfXGrid2
             addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
 
         if canMove:
+            # 2nd grid move
+            device.log('Grid 2 moving to ' + str(xPosGrid2) + ', ' + str(yPosGrid2) + ', ' + str(zPosGrid2), 'success', ['toast'])
+
             # Do the move and execute the sequence
-            device.move_absolute(
-                {
-                    'kind': 'coordinate',
-                    'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': addToZHeightGrid2}
-                },
-                100,
-                {
-                    'kind': 'coordinate',
-                    'args': {'x': 0, 'y': 0, 'z': 0}
-                }
-            )
+            # device.move_absolute(
+            #     {
+            #         'kind': 'coordinate',
+            #         'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': addToZHeightGrid2}
+            #     },
+            #     100,
+            #     {
+            #         'kind': 'coordinate',
+            #         'args': {'x': 0, 'y': 0, 'z': 0}
+            #     }
+            # )
 
-            # Run sequence after 2nd grid move
-            if sequenceAfter2ndGridMove != "":
-                device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
-                device.execute(sequenceAfter2ndGridMoveId)
+            # If endLastRowGrid1 and the moveBeforeLastMade has been set then record this as the last position and stop all future moves
+            if moveBeforeLastMade:
+                canMove = False
+                os.remove(configFileName)                           # Write the current position of the 2nd grids x,y co-ordinates to the config
+                configContents = {evName: str(xPosGrid2) + "," + str(yPosGrid2)}
+                with open(configFileName, 'w') as f:
+                    json.dump(configContents, f)
+                    f.close()
 
-            secondGridHasMoved = True
+            # # Run sequence after 2nd grid move
+            # if sequenceAfter2ndGridMove != "":
+            #     device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
+            #     device.execute(sequenceAfter2ndGridMoveId)
 
         # Increment y column position for grid 1
         yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
@@ -233,15 +242,6 @@ for rowGrid1Index in range(rowsGrid1):
             colGrid2Index += 1                                  # Increment column index to move to the next column
         else :                                              # else it's a new row 
             rowGrid2Index += 1                                  # Increment row index to move to the next row
-            if secondGridHasMoved:                              # If at the end of the row and the second grid has moved
-                canMove = False                                     # Don't do any more moves
-                os.remove(configFileName)                           # Write the current position of the 2nd grids x,y co-ordinates to the config
-                configContents = {evName: str(xPosGrid2) + "," + str(yPosGrid2)}
-                with open(configFileName, 'w') as f:
-                    json.dump(configContents, f)
-                    f.close()
-            else:                                               # else if the 2nd grid hasn't moved see if the last move was at the end of this row
-                if ((xPosGrid2 - 5) <= currentPositionX <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5) <= currentPositionY <= (yPosGrid2 + 5)) :
-                    canMove = True                              # set the canMove flag so we can start moving
+
 # except :
 #     pass # To ignore the error "Failed to execute command: Firmware error @ “get_position”: :farmware_exit at x=2218.2, y=41, z=0"
