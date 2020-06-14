@@ -10,6 +10,9 @@ import os
 # TODO work out why it takes the Farmware librarys so long to load: 
 # https://forum.farmbot.org/t/farmware-moveabsolute-and-executesequence-not-working/5784/28
 
+# A row is movement along the Y axis
+# A column is movement along the X axis
+
 # Rewrite of Grid2Grid to run in 20 minutes due to limitations put on Farmware 
 # i.e. Farmware can only run for 20 minutes and there is a 2 second delay between device calls
 # the only way to loop is to use sequence recursion at the end of each row 
@@ -113,13 +116,14 @@ moveAfterLastMade = False
 if currentPositionX == 0 and currentPositionY == 0:
     canMove = True
 
-for rowGrid1Index in range(rowsGrid1):
-    yPosGrid1 = startYGrid1 + (spaceBetweenColsGrid1 * rowGrid1Index)
-    yPosGrid2 = startYGrid2 + (spaceBetweenColsGrid2 * rowGrid2Index)
-    for colGrid1Index in range(colsGrid1):
-        xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * colGrid1Index)
-        xPosGrid2 = startXGrid2 + (spaceBetweenRowsGrid2 * colGrid2Index)
-        
+for colGrid1Index in range(colsGrid1):
+    xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * colGrid1Index)
+    xPosGrid2 = startXGrid2 + (spaceBetweenRowsGrid2 * colGrid2Index)
+
+    for rowGrid1Index in range(rowsGrid1):
+        yPosGrid1 = startYGrid1 + (spaceBetweenColsGrid1 * rowGrid1Index)
+        yPosGrid2 = startYGrid2 + (spaceBetweenColsGrid2 * rowGrid2Index)
+
         device.move_absolute(
             {
                 'kind': 'coordinate',
@@ -143,8 +147,9 @@ for rowGrid1Index in range(rowsGrid1):
                 'args': {'x': 0, 'y': 0, 'z': 0}
             }
         )  
-        colGrid2Index += 1
-    rowGrid2Index += 1
+        rowGrid2Index += 1
+    colGrid2Index += 1
+    
 
 # # GRID 1
 # #-------
