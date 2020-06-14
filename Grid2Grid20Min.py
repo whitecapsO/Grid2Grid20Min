@@ -115,14 +115,21 @@ if currentPositionX == 0 and currentPositionY == 0:
     canMove = True
     device.log(message='canMove = True', message_type='success')
 
-# Start the first grid movement
-for rowGrid1Index in range(rowsGrid1):
-    # GRID 1
-    #-------
+# # Start the first grid movement
+# for rowGrid1Index in range(rowsGrid1):
+#     # GRID 1
+#     #-------
+#     # Set first grids y position back to the first column
+#     yPosGrid1 = startYGrid1
+
+#     for colGrid1Index in range(colsGrid1):
+
+# GRID 1
+for colGrid1Index in range(colsGrid1):
     # Set first grids y position back to the first column
     yPosGrid1 = startYGrid1
 
-    for colGrid1Index in range(colsGrid1):
+    for rowGrid1Index in range(rowsGrid1):
         device.log(message='Grid 1 row index: ' + str(rowGrid1Index) + ' Grid 1 col index:' + str(colGrid1Index), message_type='success')
         device.log(message='Grid 2 row index: ' + str(rowGrid2Index) + ' Grid 2 col index:' + str(colGrid2Index), message_type='success')
         
@@ -176,11 +183,11 @@ for rowGrid1Index in range(rowsGrid1):
                 if ((alternateInBetweenGrid1 == 1)                  # Is alternateInBetween
                 and (colGrid1Index > 0 and (colGrid1Index % 2) > 0) # is on an alternateInBetween odd numbered (offset) column  
                 and (rowGrid1Index >= rowsGrid1 - 2)) :             # is on the second to last row index as an alternateInBetween has 1 less row
-                     moveBeforeLastMade = True
-                     device.log(message='moveBeforeLastMade = True', message_type='success')
+                        moveBeforeLastMade = True
+                        device.log(message='moveBeforeLastMade = True', message_type='success')
                 elif (rowGrid1Index >= (rowsGrid1 - 1)) and (colGrid1Index >= (colsGrid1 - 1)) :    # else if on the last row and last column
-                     moveBeforeLastMade = True
-                     device.log(message='moveBeforeLastMade = True', message_type='success')
+                        moveBeforeLastMade = True
+                        device.log(message='moveBeforeLastMade = True', message_type='success')
 
         # GRID 2
         #-------
