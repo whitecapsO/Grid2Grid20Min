@@ -112,10 +112,10 @@ moveBeforeLastMade = False
 if currentPositionX == 0 and currentPositionY == 0:
     canMove = True
 
+# GRID 1
+#-------
 # Start the first grid movement
 for rowGrid1Index in range(rowsGrid1):
-    # GRID 1
-    #-------
     # Set first grids y position back to the first column
     yPosGrid1 = startYGrid1
 
@@ -135,7 +135,7 @@ for rowGrid1Index in range(rowsGrid1):
 
         # 1st grid move set the first grid row index back to zero if alternate inbetween column on last row let the loop handle the rest
         if ((alternateInBetweenGrid1 == 1)                  # Is alternateInBetween
-        and (colGrid1Index > 0 and (colGrid1Index % 2) > 0) # is on an alternateInBetween odd numbered (offset) column  
+        and (colGrid1Index > 0 and (colGrid1Index % 2) > 0) # is on an alternateInBetween odd numbered (offset) in the row  
         and (rowGrid1Index >= rowsGrid1 - 1)) :             # is on the second to last row index as an alternateInBetween has 1 less row
             # Increment y column position for grid 1
             yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
@@ -229,10 +229,6 @@ for rowGrid1Index in range(rowsGrid1):
             #     device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
             #     device.execute(sequenceAfter2ndGridMoveId)
 
-        # Increment y column position for grid 1
-        yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
-        device.log('Increment Y to ' + str(yPosGrid1), 'success', ['toast'])
-
         # Set the second grid row and column indexes
         if ((alternateInBetweenGrid2 == 1)                  # Is alternateInBetween
         and (colGrid2Index > 0 and (colGrid2Index % 2) > 0) # is on an alternateInBetween odd numbered (offset) column  
@@ -244,6 +240,10 @@ for rowGrid1Index in range(rowsGrid1):
             colGrid2Index += 1                                  # Increment column index to move to the next column
         else :                                              # else it's a new row 
             rowGrid2Index += 1                                  # Increment row index to move to the next row
+
+    # Increment y column position for grid 1
+    yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
+    device.log('Increment Y to ' + str(yPosGrid1), 'success', ['toast'])
 
 # except :
 #     pass # To ignore the error "Failed to execute command: Firmware error @ “get_position”: :farmware_exit at x=2218.2, y=41, z=0"
