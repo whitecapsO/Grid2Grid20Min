@@ -231,6 +231,10 @@ for rowGrid1Index in range(rowsGrid1):
         # elif moveAfterLastMade:
         #     canMove = True
 
+        # Increment y column position for grid 1
+        yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
+        device.log('Increment Y to ' + str(yPosGrid1), 'success', ['toast'])
+
         # Set the second grid row and column indexes
         if ((alternateInBetweenGrid2 == 1)                  # Is alternateInBetween
         and (colGrid2Index > 0 and (colGrid2Index % 2) > 0) # is on an alternateInBetween odd numbered (offset) column  
@@ -243,9 +247,7 @@ for rowGrid1Index in range(rowsGrid1):
         else :                                              # else it's a new row 
             rowGrid2Index += 1                                  # Increment row index to move to the next row
 
-    # Increment y column position for grid 1
-    yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
-    device.log('Increment Y to ' + str(yPosGrid1), 'success', ['toast'])
+
 
     # if ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)):    # If at the last row and found x, y index saved the signal to start moving
     #     moveAfterLastMade = True                            # Start all moves after the second grid incremented
