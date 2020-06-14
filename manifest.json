@@ -4,7 +4,7 @@
 	"author": "whitecapsO",
 	"description": "Generic Farmware function to move between two grids each move completed within 20 minutes",
 	"farmware_manifest_version": "2.0.0",
-	"package_version": "1.0.24",
+	"package_version": "1.0.25",
 	"farmbot_os_version_requirement": ">= 8.0.0",
 	"url": "https://raw.githubusercontent.com/whitecapsO/Grid2Grid20Min/master/manifest.json",
 	"zip": "https://github.com/whitecapsO/Grid2Grid20Min/archive/master.zip",
@@ -30,6 +30,7 @@
 		"17": {"name": "startOfXSlopeGrid2", "label": "Start of X axis slope in second grid:", "value": "0"},
 		"18": {"name": "sineOfAngleXGrid2", "label": "Sine of angle of the X axis slope in second grid:", "value": "0"},
 		"19": {"name": "alternateInBetweenGrid2", "label": "Whether to calculate alternate in between X axis positions in second grid:", "value": "0"},
-		"20": {"name": "sequenceAfter2ndGridMove", "label": "Sequence to call after moving to a cell on the second grid:", "value": ""}
+		"20": {"name": "sequenceAfter2ndGridMove", "label": "Sequence to call after moving to a cell on the second grid:", "value": ""},
+		"21": {"name": "movesWithin20Mins", "label": "How many moves within the next 20 minutes", "value": "0"}
 	}
 }

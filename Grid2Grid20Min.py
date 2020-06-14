@@ -5,7 +5,13 @@ from farmware_tools import get_config_value
 import json
 import os
 
-#TODO implement endLastRowGrid2
+# TODO implement
+# A count to 11 could be configurable and stop on 11th second grid move and write that move to the config
+# If config is 0,0 then start from start otherwise iterate through the loop until you hit the config on the second grid and start from there
+# Alternate inbetween on x axis on both grids
+# Think if using alternate inbetween then instead of x count = 11, 
+# x count = the number of actual x positions i.e. x count = 21 then on any column tell it when to use the odd or even numbered x positions
+# This means you need to give it of calculate it an alternate inbetween count but this fucks the grid which isn't alternate in between
 
 # TODO work out why it takes the Farmware librarys so long to load: 
 # https://forum.farmbot.org/t/farmware-moveabsolute-and-executesequence-not-working/5784/28
@@ -65,6 +71,8 @@ sineOfAngleXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name
 alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='alternateInBetweenGrid2', value_type=int)
 sequenceAfter2ndGridMove = get_config_value(farmware_name='Grid2Grid20Min', config_name='sequenceAfter2ndGridMove', value_type=str)
 
+movesWithin20Mins = get_config_value(farmware_name='Grid2Grid20Min', config_name='movesWithin20Mins', value_type=int)
+
 # Set config file and environment variable names
 configFileName = '/tmp/farmware/config.json'
 evName = 'xyCoordinates'
@@ -73,6 +81,8 @@ configContents = ''
 # Initialise row (X) and column (Y) indexes for all grids
 xIndex = 0
 yIndex = 0
+moveCount = 0
+canMove = False
 
 addToZHeightGrid1 = 0
 addToZHeightGrid2 = 0
@@ -111,8 +121,9 @@ device.log(message='currentPositionXstr: ' + currentPositionXstr + ' currentPosi
 
 # Set the canMove and hasMoved flags
 canMove = False
-moveBeforeLastMade = False
-moveAfterLastMade = False
+# moveBeforeLastMade = False
+# moveAfterLastMade = False
+
 if currentPositionX == 0 and currentPositionY == 0:
     canMove = True
 
@@ -124,29 +135,47 @@ for yIndex in range(yAxisCount):
         xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
         xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
 
-        device.move_absolute(
-            {
-                'kind': 'coordinate',
-                'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': 0}
-            },
-            100,
-            {
-                'kind': 'coordinate',
-                'args': {'x': 0, 'y': 0, 'z': 0}
-            }
-        )
-        
-        device.move_absolute(
-            {
-                'kind': 'coordinate',
-                'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': 0}
-            },
-            100,
-            {
-                'kind': 'coordinate',
-                'args': {'x': 0, 'y': 0, 'z': 0}
-            }
-        )  
+        if canMove :
+            device.move_absolute(
+                {
+                    'kind': 'coordinate',
+                    'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': 0}
+                },
+                100,
+                {
+                    'kind': 'coordinate',
+                    'args': {'x': 0, 'y': 0, 'z': 0}
+                }
+            )
+    
+            device.move_absolute(
+                {
+                    'kind': 'coordinate',
+                    'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': 0}
+                },
+                100,
+                {
+                    'kind': 'coordinate',
+                    'args': {'x': 0, 'y': 0, 'z': 0}
+                }
+            ) 
+
+            moveCount += 1 
+
+        if ((xPosGrid2 - 5) <= currentPositionX <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5) <= currentPositionY <= (yPosGrid2 + 5)) :
+            canMove = True
+
+        if moveCount >= movesWithin20Mins :
+            break
+
+    if moveCount >= movesWithin20Mins :
+        break
+
+os.remove(configFileName)                                           # Write the current position of the 2nd grids x,y co-ordinates to the config
+configContents = {evName: str(xPosGrid2) + "," + str(yPosGrid2)}
+with open(configFileName, 'w') as f:
+    json.dump(configContents, f)
+    f.close()
 
 # # GRID 1
 # #-------
