@@ -169,20 +169,20 @@ for rowGrid1Index in range(rowsGrid1):
 
                 #and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5))
 
-            if endLastRowGrid1 == 1:                                        # If we should end the Farmware moves after the last row of grid one and on the last row
-                if ((alternateInBetweenGrid1 == 1)                          # Is alternateInBetween
-                and (colGrid1Index > 0 and (colGrid1Index % 2) > 0)         # is on an alternateInBetween odd numbered (offset) column  
-                and (rowGrid1Index >= rowsGrid1 - 2)) or ((rowGrid1Index >= (rowsGrid1 - 1)) 
-                and (colGrid1Index >= (colsGrid1 - 1))):                    # is on the second to last row index as an alternateInBetween has 1 less row
-                    if ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)):    # If at the last row and found x, y index saved the signal to start moving
-                        moveAfterLastMade = True                            # Start all moves after the second grid incremented
-                    else:
-                        moveBeforeLastMade = True                           # Stop all moves after the second grid move
-                        os.remove(configFileName)                           # Write the current position of the 2nd grids x,y co-ordinates to the config
-                        configContents = {evName: str(xPosGrid1) + "," + str(yPosGrid1)}
-                        with open(configFileName, 'w') as f:
-                            json.dump(configContents, f)
-                            f.close()
+            # if endLastRowGrid1 == 1:                                        # If we should end the Farmware moves after the last row of grid one and on the last row
+            #     if ((alternateInBetweenGrid1 == 1)                          # Is alternateInBetween
+            #     and (colGrid1Index > 0 and (colGrid1Index % 2) > 0)         # is on an alternateInBetween odd numbered (offset) column  
+            #     and (rowGrid1Index >= rowsGrid1 - 2)) or ((rowGrid1Index >= (rowsGrid1 - 1)) 
+            #     and (colGrid1Index >= (colsGrid1 - 1))):                    # is on the second to last row index as an alternateInBetween has 1 less row
+            #         if ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)):    # If at the last row and found x, y index saved the signal to start moving
+            #             moveAfterLastMade = True                            # Start all moves after the second grid incremented
+            #         else:
+            #             moveBeforeLastMade = True                           # Stop all moves after the second grid move
+            #             os.remove(configFileName)                           # Write the current position of the 2nd grids x,y co-ordinates to the config
+            #             configContents = {evName: str(xPosGrid1) + "," + str(yPosGrid1)}
+            #             with open(configFileName, 'w') as f:
+            #                 json.dump(configContents, f)
+            #                 f.close()
 
         # GRID 2
         #-------
@@ -246,6 +246,16 @@ for rowGrid1Index in range(rowsGrid1):
     # Increment y column position for grid 1
     yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
     device.log('Increment Y to ' + str(yPosGrid1), 'success', ['toast'])
+
+    if ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)):    # If at the last row and found x, y index saved the signal to start moving
+        moveAfterLastMade = True                            # Start all moves after the second grid incremented
+    else:
+        moveBeforeLastMade = True                           # Stop all moves after the second grid move
+        os.remove(configFileName)                           # Write the current position of the 2nd grids x,y co-ordinates to the config
+        configContents = {evName: str(xPosGrid1) + "," + str(yPosGrid1)}
+        with open(configFileName, 'w') as f:
+            json.dump(configContents, f)
+            f.close()
 
 # except :
 #     pass # To ignore the error "Failed to execute command: Firmware error @ “get_position”: :farmware_exit at x=2218.2, y=41, z=0"
