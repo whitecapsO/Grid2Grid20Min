@@ -147,9 +147,6 @@ for yIndex in range(yAxisCount):
                 'args': {'x': 0, 'y': 0, 'z': 0}
             }
         )  
-        rowGrid2Index += 1
-    colGrid2Index += 1
-    
 
 # # GRID 1
 # #-------
