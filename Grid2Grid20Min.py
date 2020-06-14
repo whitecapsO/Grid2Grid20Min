@@ -42,31 +42,28 @@ import os
 # A better way would be to initialise 2 arrays with x,y coordinates and loop through them but this algo works
 
 #try :
-rowsGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='rowsGrid1', value_type=int)
-colsGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='colsGrid1', value_type=int)
-spaceBetweenRowsGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenRowsGrid1', value_type=float)
-spaceBetweenColsGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenColsGrid1', value_type=float)
+xAxisCount = get_config_value(farmware_name='Grid2Grid20Min', config_name='xAxisCount', value_type=int)
+yAxisCount = get_config_value(farmware_name='Grid2Grid20Min', config_name='yAxisCount', value_type=int)
+
+spaceBetweenXGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenXGrid1', value_type=float)
+spaceBetweenYGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenYGrid1', value_type=float)
 startXGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startXGrid1', value_type=float)
 startYGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startYGrid1', value_type=float)
 startZGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startZGrid1', value_type=float)
-begininingOfXGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='begininingOfXGrid1', value_type=float)
+startOfXSlopeGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startOfXSlopeGrid1', value_type=float)
 sineOfAngleXGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='sineOfAngleXGrid1', value_type=float)
 alternateInBetweenGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='alternateInBetweenGrid1', value_type=int)
 sequenceAfter1stGridMove = get_config_value(farmware_name='Grid2Grid20Min', config_name='sequenceAfter1stGridMove', value_type=str)
-endLastRowGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='endLastRowGrid1', value_type=int)
 
-rowsGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='rowsGrid2', value_type=int)
-colsGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='colsGrid2', value_type=int)
-spaceBetweenRowsGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenRowsGrid2', value_type=float)
-spaceBetweenColsGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenColsGrid2', value_type=float)
+spaceBetweenXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenXGrid2', value_type=float)
+spaceBetweenYGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenYGrid2', value_type=float)
 startXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startXGrid2', value_type=float)
 startYGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startYGrid2', value_type=float)
 startZGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startZGrid2', value_type=float)
-begininingOfXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='begininingOfXGrid2', value_type=float)
+startOfXSlopeGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startOfXSlopeGrid1', value_type=float)
 sineOfAngleXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='sineOfAngleXGrid2', value_type=float)
 alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='alternateInBetweenGrid2', value_type=int)
 sequenceAfter2ndGridMove = get_config_value(farmware_name='Grid2Grid20Min', config_name='sequenceAfter2ndGridMove', value_type=str)
-endLastRowGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='endLastRowGrid2', value_type=int)
 
 # Set config file and environment variable names
 configFileName = '/tmp/farmware/config.json'
@@ -74,15 +71,18 @@ evName = 'xyCoordinates'
 configContents = ''
 
 # Initialise row (X) and column (Y) indexes for all grids
-rowGrid1Index = 0
-colGrid1Index = 0
-rowGrid2Index = 0
-colGrid2Index = 0
+xIndex = 0
+yIndex = 0
+
 addToZHeightGrid1 = 0
 addToZHeightGrid2 = 0
 
-# Set constant Z positions
+# Initialise positions
+xPosGrid1 = startXGrid1
+yPosGrid1 = startYGrid1
 zPosGrid1 = startZGrid1
+xPosGrid2 = startXGrid2
+yPosGrid2 = startYGrid2
 zPosGrid2 = startZGrid2
 
 # Get sequence IDs if name given
@@ -116,13 +116,13 @@ moveAfterLastMade = False
 if currentPositionX == 0 and currentPositionY == 0:
     canMove = True
 
-for colGrid1Index in range(colsGrid1):
-    xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * colGrid1Index)
-    xPosGrid2 = startXGrid2 + (spaceBetweenRowsGrid2 * colGrid2Index)
+for yIndex in range(yAxisCount):
+    yPosGrid1 = startYGrid1 + (spaceBetweenYGrid1 * yIndex)
+    yPosGrid2 = startYGrid2 + (spaceBetweenYGrid2 * yIndex)
 
-    for rowGrid1Index in range(rowsGrid1):
-        yPosGrid1 = startYGrid1 + (spaceBetweenColsGrid1 * rowGrid1Index)
-        yPosGrid2 = startYGrid2 + (spaceBetweenColsGrid2 * rowGrid2Index)
+    for xIndex in range(xAxisCount):
+        xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
+        xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
 
         device.move_absolute(
             {
