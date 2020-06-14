@@ -98,8 +98,6 @@ with open(configFileName, 'r') as f:
     configContents = json.load(f)
     f.close()
 
-device.log(message='Opened Config', message_type='success')
-
 # Parse the data into variables
 currentPositionXstr = str(configContents[evName]).split(",",-1)[0]
 currentPositionX = int(currentPositionXstr.split('.')[0])
@@ -113,38 +111,27 @@ canMove = False
 moveBeforeLastMade = False
 if currentPositionX == 0 and currentPositionY == 0:
     canMove = True
-    device.log(message='canMove = True', message_type='success')
 
-# # Start the first grid movement
-# for rowGrid1Index in range(rowsGrid1):
-#     # GRID 1
-#     #-------
-#     # Set first grids y position back to the first column
-#     yPosGrid1 = startYGrid1
-
-#     for colGrid1Index in range(colsGrid1):
-
-# GRID 1
-for colGrid1Index in range(colsGrid1):
+# Start the first grid movement
+for rowGrid1Index in range(rowsGrid1):
+    # GRID 1
+    #-------
     # Set first grids y position back to the first column
     yPosGrid1 = startYGrid1
 
-    for rowGrid1Index in range(rowsGrid1):
-        device.log(message='Grid 1 row index: ' + str(rowGrid1Index) + ' Grid 1 col index:' + str(colGrid1Index), message_type='success')
-        device.log(message='Grid 2 row index: ' + str(rowGrid2Index) + ' Grid 2 col index:' + str(colGrid2Index), message_type='success')
-        
+    for colGrid1Index in range(colsGrid1):
         # Set the x and y positions on the first grid if alternateInBetween assume the first 
         # column is not an alternateInBetween then odd numbered colums are
         if alternateInBetweenGrid1 == 1 :
             if colGrid1Index > 0 and (colGrid1Index % 2) > 0 :
-                device.log(message='Grid 1 alternateInBetween', message_type='success')
                 xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * 0.5) + (spaceBetweenRowsGrid1 * rowGrid1Index)
+                device.log('Increment X to ' + str(xPosGrid1), 'success', ['toast'])
             else :
                 xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * rowGrid1Index)
+                device.log('Increment X to ' + str(xPosGrid1), 'success', ['toast'])
         else :
             xPosGrid1 = startXGrid1 + (spaceBetweenRowsGrid1 * rowGrid1Index)
-
-        device.log(message='Grid 1 x pos: ' + str(yPosGrid1) + ' Grid 1 y pos:' + str(xPosGrid1), message_type='success')
+            device.log('Increment X to ' + str(xPosGrid1), 'success', ['toast'])
 
         # 1st grid move set the first grid row index back to zero if alternate inbetween column on last row let the loop handle the rest
         if ((alternateInBetweenGrid1 == 1)                  # Is alternateInBetween
@@ -152,7 +139,7 @@ for colGrid1Index in range(colsGrid1):
         and (rowGrid1Index >= rowsGrid1 - 1)) :             # is on the second to last row index as an alternateInBetween has 1 less row
             # Increment y column position for grid 1
             yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
-            device.log(message='Grid 1 alternateInBetween column last row so miss a row', message_type='success')
+            device.log('Increment Y to ' + str(yPosGrid1), 'success', ['toast'])
         else :
             # Get the height additions for the Z axis if there is an x axis length and angle 
             if (begininingOfXGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
@@ -195,7 +182,6 @@ for colGrid1Index in range(colsGrid1):
         # column is not an alternateInBetween then odd numbered colums are
         if alternateInBetweenGrid2 == 1 :
             if colGrid2Index > 0 and (colGrid2Index % 2) > 0 :
-                device.log(message='Grid 2 alternateInBetween column', message_type='success')
                 xPosGrid2 = startXGrid2 + (spaceBetweenRowsGrid2 * 0.5) + (spaceBetweenRowsGrid2 * rowGrid2Index)
             else :
                 xPosGrid2 = startXGrid2 + (spaceBetweenRowsGrid2 * rowGrid2Index)
@@ -245,6 +231,7 @@ for colGrid1Index in range(colsGrid1):
 
         # Increment y column position for grid 1
         yPosGrid1 = yPosGrid1 + spaceBetweenColsGrid1
+        device.log('Increment Y to ' + str(yPosGrid1), 'success', ['toast'])
 
         # Set the second grid row and column indexes
         if ((alternateInBetweenGrid2 == 1)                  # Is alternateInBetween
