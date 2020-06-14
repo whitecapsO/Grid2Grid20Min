@@ -174,7 +174,7 @@ for rowGrid1Index in range(rowsGrid1):
                 and (colGrid1Index > 0 and (colGrid1Index % 2) > 0)         # is on an alternateInBetween odd numbered (offset) column  
                 and (rowGrid1Index >= rowsGrid1 - 2)) or ((rowGrid1Index >= (rowsGrid1 - 1)) 
                 and (colGrid1Index >= (colsGrid1 - 1))):                    # is on the second to last row index as an alternateInBetween has 1 less row
-                    if ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)):    # If at the last row and y index saved the signal to start moving
+                    if ((xPosGrid1 - 5) <= currentPositionX <= (xPosGrid1 + 5)) and ((yPosGrid1 - 5) <= currentPositionY <= (yPosGrid1 + 5)):    # If at the last row and found x, y index saved the signal to start moving
                         moveAfterLastMade = True                            # Start all moves after the second grid incremented
                     else:
                         moveBeforeLastMade = True                           # Stop all moves after the second grid move
