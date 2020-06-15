@@ -83,6 +83,7 @@ xIndex = 0
 yIndex = 0
 moveCount = 0
 canMove = False
+loopBreaked = False
 
 addToZHeightGrid1 = 0
 addToZHeightGrid2 = 0
@@ -166,9 +167,11 @@ for yIndex in range(yAxisCount):
             canMove = True
 
         if moveCount >= movesWithin20Mins :
+            loopBreaked = True
             break
 
     if moveCount >= movesWithin20Mins :
+        loopBreaked = True
         break
 
 os.remove(configFileName)                                           # Write the current position of the 2nd grids x,y co-ordinates to the config
@@ -176,6 +179,9 @@ configContents = {evName: str(xPosGrid2) + "," + str(yPosGrid2)}
 with open(configFileName, 'w') as f:
     json.dump(configContents, f)
     f.close()
+
+if loopBreaked == False :
+    device.write_pin(3,0,0)
 
 # # GRID 1
 # #-------
