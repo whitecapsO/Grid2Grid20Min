@@ -91,15 +91,15 @@ yPosGrid2 = startYGrid2
 zPosGrid2 = startZGrid2
 
 # Get sequence IDs if name given
-if sequenceAfter1stGridMove != "":
-    sequenceAfter1stGridMoveId = app.find_sequence_by_name(name=sequenceAfter1stGridMove)
-else :
-    sequenceAfter1stGridMoveId = 0
+# if sequenceAfter1stGridMove != "":
+#     sequenceAfter1stGridMoveId = app.find_sequence_by_name(name=sequenceAfter1stGridMove)
+# else :
+#     sequenceAfter1stGridMoveId = 0
 
-if sequenceAfter2ndGridMove != "":
-    sequenceAfter2ndGridMoveId = app.find_sequence_by_name(name=sequenceAfter2ndGridMove)
-else :
-    sequenceAfter2ndGridMoveId = 0
+# if sequenceAfter2ndGridMove != "":
+#     sequenceAfter2ndGridMoveId = app.find_sequence_by_name(name=sequenceAfter2ndGridMove)
+# else :
+#     sequenceAfter2ndGridMoveId = 0
 
 # Get the current position for x and y from the config
 with open(configFileName, 'r') as f:
@@ -170,9 +170,9 @@ for yIndex in range(yAxisCount):
                     'args': {'x': 0, 'y': 0, 'z': 0}
                 }
             )
-            if sequenceAfter1stGridMove != "":
-                device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
-                device.execute(sequenceAfter1stGridMoveId)
+            # if sequenceAfter1stGridMove != "":
+            #     device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
+            #     device.execute(sequenceAfter1stGridMoveId)
 
         # Grid 2
         # if((alternateInBetweenGrid2 == 1)               # If we can move and not set to alternateInBetween 
@@ -199,9 +199,9 @@ for yIndex in range(yAxisCount):
                     'args': {'x': 0, 'y': 0, 'z': 0}
                 }
             ) 
-            if sequenceAfter2ndGridMove != "":
-                device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
-                device.execute(sequenceAfter2ndGridMoveId)
+            # if sequenceAfter2ndGridMove != "":
+            #     device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
+            #     device.execute(sequenceAfter2ndGridMoveId)
 
             moveCount += 1 # **** check this works with alternate inbetween and you don't end up loosing a or gaining an extra move
 
