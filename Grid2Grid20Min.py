@@ -86,6 +86,8 @@ yPosGrid1 = startYGrid1
 xPosGrid2 = startXGrid2
 yPosGrid2 = startYGrid2
 
+device.log(message='sequenceAfter1stGridMove: ' + sequenceAfter1stGridMove + ' sequenceAfter2ndGridMove:' + sequenceAfter1stGridMove, message_type='success')
+
 # Get sequence IDs if name given
 if sequenceAfter1stGridMove != "" :
     sequenceAfter1stGridMoveId = app.find_sequence_by_name(name=sequenceAfter1stGridMove)
