@@ -4,7 +4,7 @@
 	"author": "whitecapsO",
 	"description": "Generic Farmware function to move between two grids each move completed within 20 minutes",
 	"farmware_manifest_version": "2.0.0",
-	"package_version": "1.0.47",
+	"package_version": "1.0.48",
 	"farmbot_os_version_requirement": ">= 8.0.0",
 	"url": "https://raw.githubusercontent.com/whitecapsO/Grid2Grid20Min/master/manifest.json",
 	"zip": "https://github.com/whitecapsO/Grid2Grid20Min/archive/master.zip",
@@ -20,7 +20,7 @@
 		"7": {"name": "startOfXSlopeGrid1", "label": "Start of X axis slope in first grid:", "value": "0"},
 		"8": {"name": "sineOfAngleXGrid1", "label": "Sine of angle of the X axis slope in first grid:", "value": "0"},
 		"9": {"name": "alternateInBetweenGrid1", "label": "Whether to calculate alternate in between X axis positions in first grid:", "value": "0"},
-		"10": {"name": "sequenceAfter1stGridMove", "label": "Sequence to call after moving to a cell on the first grid:", "value": ""},
+		"10": {"name": "sequenceAfter1stGridMove", "label": "Sequence to call after moving to a cell on the first grid:", "value": "NULL"},
 		"11": {"name": "spaceBetweenXGrid2", "label": "The number of millimeters between each x axis position in second grid:", "value": "1"},
 		"12": {"name": "spaceBetweenYGrid2", "label": "The number of millimeters between each y axis in position in second grid:", "value": "1"},
 		"13": {"name": "startXGrid2", "label": "Where to start the x axis from in second grid:", "value": "0"},
@@ -28,7 +28,7 @@
 		"15": {"name": "startOfXSlopeGrid2", "label": "Start of X axis slope in second grid:", "value": "0"},
 		"16": {"name": "sineOfAngleXGrid2", "label": "Sine of angle of the X axis slope in second grid:", "value": "0"},
 		"17": {"name": "alternateInBetweenGrid2", "label": "Whether to calculate alternate in between X axis positions in second grid:", "value": "0"},
-		"18": {"name": "sequenceAfter2ndGridMove", "label": "Sequence to call after moving to a cell on the second grid:", "value": ""},
+		"18": {"name": "sequenceAfter2ndGridMove", "label": "Sequence to call after moving to a cell on the second grid:", "value": "NULL"},
 		"19": {"name": "movesWithin20Mins", "label": "How many moves within the next 20 minutes", "value": "0"}
 	}
 }
