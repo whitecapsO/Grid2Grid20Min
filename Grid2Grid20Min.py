@@ -126,24 +126,24 @@ for yIndex in range(yAxisCount):
     yPosGrid2 = startYGrid2 + (spaceBetweenYGrid2 * yIndex)
 
     for xIndex in range(xAxisCount):
-        xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
-        xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
+        # xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
+        # xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
         # Set X coordinates
-        # if alternateInBetweenGrid1 == 1 :
-        #     if xIndex > 0 and (xIndex % 2) > 0 :
-        #         xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * 0.5) + (spaceBetweenXGrid1 * xIndex)
-        #     else :
-        #         xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
-        # else :
-        #     xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
+        if alternateInBetweenGrid1 == 1 :
+            if xIndex > 0 and (xIndex % 2) > 0 :
+                xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * 0.5) + (spaceBetweenXGrid1 * xIndex)
+            else :
+                xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
+        else :
+            xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
 
-        # if alternateInBetweenGrid2 == 1 :
-        #     if xIndex > 0 and (xIndex % 2) > 0 :
-        #         xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * 0.5) + (spaceBetweenXGrid2 * xIndex)
-        #     else :
-        #         xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
-        # else :
-        #     xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
+        if alternateInBetweenGrid2 == 1 :
+            if xIndex > 0 and (xIndex % 2) > 0 :
+                xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * 0.5) + (spaceBetweenXGrid2 * xIndex)
+            else :
+                xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
+        else :
+            xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
 
         # Grid 1
         # if ((alternateInBetweenGrid1 == 1)              # If we can move and not set to alternateInBetween 
