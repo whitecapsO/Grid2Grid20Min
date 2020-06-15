@@ -5,13 +5,12 @@ from farmware_tools import get_config_value
 import json
 import os
 
-# TODO implement
-# A count to 11 could be configurable and stop on 11th second grid move and write that move to the config
-# If config is 0,0 then start from start otherwise iterate through the loop until you hit the config on the second grid and start from there
-# Alternate inbetween on x axis on both grids
-# Think if using alternate inbetween then instead of x count = 11, 
-# x count = the number of actual x positions i.e. x count = 21 then on any column tell it when to use the odd or even numbered x positions
-# This means you need to give it of calculate it an alternate inbetween count but this fucks the grid which isn't alternate in between
+# Rewrite of Grid2Grid to run in 20 minutes due to limitations put on Farmware 
+# i.e. Farmware can only run for 20 minutes and there is a 2 second delay between device calls
+# the only way to loop is to use sequence recursion at the end of each row 
+# the movesWithin20Mins specifies how many grid2 moves can be made in 20 minutes before 
+# breaking out of the loop anfd writing that position to a config file
+# the sequence then recalls Grid2Grid20Min and starts moving from whare it left off
 
 # TODO work out why it takes the Farmware librarys so long to load: 
 # https://forum.farmbot.org/t/farmware-moveabsolute-and-executesequence-not-working/5784/28
@@ -19,24 +18,14 @@ import os
 # A row is movement along the Y axis
 # A column is movement along the X axis
 
-# Rewrite of Grid2Grid to run in 20 minutes due to limitations put on Farmware 
-# i.e. Farmware can only run for 20 minutes and there is a 2 second delay between device calls
-# the only way to loop is to use sequence recursion at the end of each row 
-
 # The way the loop works is:
 # 1 - To initialise an index via a separate Farmware that sets X & Y coordinates in an environment variable to 0,0 in a config file 
 # 2 - This Farmware reads the config file coordinates if they are 0,0 it assumes it is at the start
-# 3 - If they are not then it assumes the co-ordinates are at the end of a row for the second grid as the co-ordinates are updated at the end of the second grid row
-# 4 - If at end of row i.e. <> 0, then loop through and calculate the co-ordinates until they match what is in the config file 
-# 5 - Calculate the co-ordinates one more time before upon moving to the next row
-# 6 - At the end of that row write the co-ordinates to the env variable in the config file and exit the Farmware 
+# 3 - If they are loop until the co-ordinates are found 
+# 4 - If the  moveCount = movesWithin20Mins then stop the moves and write the co-ordinates to the config file
+# 5 - If the loop ends without breakin assume we are at the end and set the pin 3 value to 0 i.e. false 
 
-# There will be three calls to the device to stay within the 20 minute window as each costs 2 seconds:
-# 1 - Get the current coordinates from a config file 
-# 2 - At the end of a row write the current co-ordinates to the config file
-# 3 - Log each move
-
-# To work out Z axis height
+# To work out Z axis height:
 # 1. To work out the X axis angle use simple trig: angle = sin(angle) = opposite \ hypotenuse i.e. angle = sin-1 (opposite \ hypotenuse)
 # 2. To work out Z axis height i.e the opposite: hypotenuse = current X pos - beginining of X then opposite = sin(angle) * hypotenuse
 # 3. Then add that height (the opposite) to the startZGrid value
@@ -46,6 +35,11 @@ import os
 # Alternate in between grid: 2 rows x 4 columns = 6 cells as last rows 2 of alternate inbetween columns missed
 # Not tested turning alternate inbetween on both grids at the same time
 # A better way would be to initialise 2 arrays with x,y coordinates and loop through them but this algo works
+
+# Future considerations:
+# Load two arrays of coordinates first and then loop through them note one grid could be diamond pattern one could be normal grid
+# Think if using alternate inbetween then instead of x count = 11, x count = the number of actual x positions i.e. x count = 21 
+# then on any column tell it when to use the odd or even numbered x positions
 
 #try :
 xAxisCount = get_config_value(farmware_name='Grid2Grid20Min', config_name='xAxisCount', value_type=int)
@@ -97,15 +91,15 @@ yPosGrid2 = startYGrid2
 zPosGrid2 = startZGrid2
 
 # Get sequence IDs if name given
-# if sequenceAfter1stGridMove != "":
-#     sequenceAfter1stGridMoveId = app.find_sequence_by_name(name=sequenceAfter1stGridMove)
-# else :
-#     sequenceAfter1stGridMoveId = 0
+if sequenceAfter1stGridMove != "":
+    sequenceAfter1stGridMoveId = app.find_sequence_by_name(name=sequenceAfter1stGridMove)
+else :
+    sequenceAfter1stGridMoveId = 0
 
-# if sequenceAfter2ndGridMove != "":
-#     sequenceAfter2ndGridMoveId = app.find_sequence_by_name(name=sequenceAfter2ndGridMove)
-# else :
-#     sequenceAfter2ndGridMoveId = 0
+if sequenceAfter2ndGridMove != "":
+    sequenceAfter2ndGridMoveId = app.find_sequence_by_name(name=sequenceAfter2ndGridMove)
+else :
+    sequenceAfter2ndGridMoveId = 0
 
 # Get the current position for x and y from the config
 with open(configFileName, 'r') as f:
@@ -122,25 +116,45 @@ device.log(message='currentPositionXstr: ' + currentPositionXstr + ' currentPosi
 
 # Set the canMove and hasMoved flags
 canMove = False
-# moveBeforeLastMade = False
-# moveAfterLastMade = False
 
 if currentPositionX == 0 and currentPositionY == 0:
     canMove = True
 
 for yIndex in range(yAxisCount):
+    # Set Y coordinates
     yPosGrid1 = startYGrid1 + (spaceBetweenYGrid1 * yIndex)
     yPosGrid2 = startYGrid2 + (spaceBetweenYGrid2 * yIndex)
 
     for xIndex in range(xAxisCount):
-        xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
-        xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
+        # Set X coordinates
+        if alternateInBetweenGrid1 == 1 :
+            if xIndex > 0 and (xIndex % 2) > 0 :
+                xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * 0.5) + (spaceBetweenXGrid1 * xIndex)
+            else :
+                xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
+        else :
+            xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
 
-        if canMove :
+        if alternateInBetweenGrid2 == 1 :
+            if xIndex > 0 and (xIndex % 2) > 0 :
+                xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * 0.5) + (spaceBetweenXGrid2 * xIndex)
+            else :
+                xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
+        else :
+            xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
+
+        # Grid 1
+        if (startOfXSlopeGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
+            hypotenuseGrid1 = xPosGrid1 - startOfXSlopeGrid1
+            addToZHeightGrid1 = sineOfAngleXGrid1 * hypotenuseGrid1
+
+        if canMove and (((alternateInBetweenGrid1 == 1)     # If we can move and not set to alternateInBetween 
+        and (xIndex > 0 and (xIndex % 2) > 0)               # on an alternateInBetween odd numbered (offset) column  
+        and (xIndex >= xAxisCount - 1)) == False) :         # on the last position as an alternateInBetween which has 1 less row
             device.move_absolute(
                 {
                     'kind': 'coordinate',
-                    'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': 0}
+                    'args': {'x': xPosGrid1, 'y': yPosGrid1, 'z': addToZHeightGrid1}
                 },
                 100,
                 {
@@ -148,11 +162,22 @@ for yIndex in range(yAxisCount):
                     'args': {'x': 0, 'y': 0, 'z': 0}
                 }
             )
-    
+            if sequenceAfter1stGridMove != "":
+                device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
+                device.execute(sequenceAfter1stGridMoveId)
+
+        if canMove and (((alternateInBetweenGrid2 == 1)     # If we can move and not set to alternateInBetween 
+        and (xIndex > 0 and (xIndex % 2) > 0)               # on an alternateInBetween odd numbered (offset) column  
+        and (xIndex >= xAxisCount - 1)) == False) :         # on the last position as an alternateInBetween which has 1 less row
+            # Grid 2
+            if (startOfXSlopeGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
+                hypotenuseGrid2 = xPosGrid2 - startOfXSlopeGrid2
+                addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
+
             device.move_absolute(
                 {
                     'kind': 'coordinate',
-                    'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': 0}
+                    'args': {'x': xPosGrid2, 'y': yPosGrid2, 'z': addToZHeightGrid2}
                 },
                 100,
                 {
@@ -160,8 +185,11 @@ for yIndex in range(yAxisCount):
                     'args': {'x': 0, 'y': 0, 'z': 0}
                 }
             ) 
+            if sequenceAfter2ndGridMove != "":
+                device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
+                device.execute(sequenceAfter2ndGridMoveId)
 
-            moveCount += 1 
+            moveCount += 1 # **** check this works with alternate inbetween and you don't end up loosing a or gaining an extra move
 
         if ((xPosGrid2 - 5) <= currentPositionX <= (xPosGrid2 + 5)) and ((yPosGrid2 - 5) <= currentPositionY <= (yPosGrid2 + 5)) :
             canMove = True
