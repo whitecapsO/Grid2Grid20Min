@@ -126,9 +126,6 @@ for yIndex in range(yAxisCount):
     yPosGrid2 = startYGrid2 + (spaceBetweenYGrid2 * yIndex)
 
     for xIndex in range(xAxisCount):
-        # xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
-        # xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
-
         # Grid 1
         # Set X coordinates
         if alternateInBetweenGrid1 == 1 :
@@ -146,12 +143,11 @@ for yIndex in range(yAxisCount):
             xPosGrid1 = startXGrid1                     # Set the X position back to the start of a non alternateInBetween
             device.log(message='alternateInBetweenGrid1 last row', message_type='success')
 
-        if canMove :
-        # if canMove :
-            # if (startOfXSlopeGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
-            #     hypotenuseGrid1 = xPosGrid1 - startOfXSlopeGrid1
-            #     addToZHeightGrid1 = sineOfAngleXGrid1 * hypotenuseGrid1
+        if (startOfXSlopeGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
+            hypotenuseGrid1 = xPosGrid1 - startOfXSlopeGrid1
+            addToZHeightGrid1 = sineOfAngleXGrid1 * hypotenuseGrid1
 
+        if canMove :
             device.move_absolute(
                 {
                     'kind': 'coordinate',
@@ -183,11 +179,11 @@ for yIndex in range(yAxisCount):
             xPosGrid2 = startXGrid2                     # Set the X position back to the start of a non alternateInBetween
             device.log(message='alternateInBetweenGrid2 last row', message_type='success')
 
+        if (startOfXSlopeGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
+            hypotenuseGrid2 = xPosGrid2 - startOfXSlopeGrid2
+            addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
+
         if canMove :
-        # if canMove :
-            # if (startOfXSlopeGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
-            #     hypotenuseGrid2 = xPosGrid2 - startOfXSlopeGrid2
-            #     addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
             device.move_absolute(
                 {
                     'kind': 'coordinate',
