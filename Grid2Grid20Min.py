@@ -155,9 +155,9 @@ for yIndex in range(yAxisCount):
                     'args': {'x': 0, 'y': 0, 'z': 0}
                 }
             )
-            # if sequenceAfter1stGridMoveId > 0 :
-            #     device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
-            #     device.execute(sequenceAfter1stGridMoveId)
+            if sequenceAfter1stGridMoveId > 0 :
+                device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
+                device.execute(sequenceAfter1stGridMoveId)
 
         # Grid 2
         if alternateInBetweenGrid2 == 1 :
