@@ -49,7 +49,6 @@ spaceBetweenXGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_nam
 spaceBetweenYGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenYGrid1', value_type=float)
 startXGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startXGrid1', value_type=float)
 startYGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startYGrid1', value_type=float)
-startZGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startZGrid1', value_type=float)
 startOfXSlopeGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startOfXSlopeGrid1', value_type=float)
 sineOfAngleXGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='sineOfAngleXGrid1', value_type=float)
 alternateInBetweenGrid1 = get_config_value(farmware_name='Grid2Grid20Min', config_name='alternateInBetweenGrid1', value_type=int)
@@ -59,7 +58,6 @@ spaceBetweenXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_nam
 spaceBetweenYGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='spaceBetweenYGrid2', value_type=float)
 startXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startXGrid2', value_type=float)
 startYGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startYGrid2', value_type=float)
-startZGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startZGrid2', value_type=float)
 startOfXSlopeGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='startOfXSlopeGrid1', value_type=float)
 sineOfAngleXGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='sineOfAngleXGrid2', value_type=float)
 alternateInBetweenGrid2 = get_config_value(farmware_name='Grid2Grid20Min', config_name='alternateInBetweenGrid2', value_type=int)
@@ -85,10 +83,8 @@ addToZHeightGrid2 = 0
 # Initialise positions
 xPosGrid1 = startXGrid1
 yPosGrid1 = startYGrid1
-zPosGrid1 = startZGrid1
 xPosGrid2 = startXGrid2
 yPosGrid2 = startYGrid2
-zPosGrid2 = startZGrid2
 
 # Get sequence IDs if name given
 # if sequenceAfter1stGridMove != "" :
