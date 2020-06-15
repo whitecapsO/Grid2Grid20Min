@@ -144,14 +144,15 @@ for yIndex in range(yAxisCount):
             xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
 
         # Grid 1
-        if ((alternateInBetweenGrid1 == 1)              # If we can move and not set to alternateInBetween 
-        and (xIndex > 0 and (xIndex % 2) > 0)           # on an alternateInBetween odd numbered (offset) column  
-        and (xIndex >= xAxisCount - 1)) :               # on the last position as an alternateInBetween which has 1 less row
-            yPosGrid1 = yPosGrid1 + spaceBetweenYGrid1  # Bump up the Y position to the next row
-            #xPosGrid1 = startXGrid1                     # Set the X position back to the start of a non alternateInBetween
-            device.log(message='alternateInBetweenGrid1 last row', message_type='success')
+        # if ((alternateInBetweenGrid1 == 1)              # If we can move and not set to alternateInBetween 
+        # and (xIndex > 0 and (xIndex % 2) > 0)           # on an alternateInBetween odd numbered (offset) column  
+        # and (xIndex >= xAxisCount - 1)) :               # on the last position as an alternateInBetween which has 1 less row
+        #     yPosGrid1 = yPosGrid1 + spaceBetweenYGrid1  # Bump up the Y position to the next row
+        #     #xPosGrid1 = startXGrid1                     # Set the X position back to the start of a non alternateInBetween
+        #     device.log(message='alternateInBetweenGrid1 last row', message_type='success')
 
-        elif canMove :
+        # elif canMove :
+        if canMove :
             if (startOfXSlopeGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
                 hypotenuseGrid1 = xPosGrid1 - startOfXSlopeGrid1
                 addToZHeightGrid1 = sineOfAngleXGrid1 * hypotenuseGrid1
@@ -172,14 +173,15 @@ for yIndex in range(yAxisCount):
                 device.execute(sequenceAfter1stGridMoveId)
 
         # Grid 2
-        if((alternateInBetweenGrid2 == 1)               # If we can move and not set to alternateInBetween 
-        and (xIndex > 0 and (xIndex % 2) > 0)           # on an alternateInBetween odd numbered (offset) column  
-        and (xIndex >= xAxisCount - 1)) :               # on the last position as an alternateInBetween which has 1 less row
-            yPosGrid2 = yPosGrid2 + spaceBetweenYGrid2  # Bump up the Y position to the next row
-            #xPosGrid2 = startXGrid2                     # Set the X position back to the start of a non alternateInBetween
-            device.log(message='alternateInBetweenGrid2 last row', message_type='success')
+        # if((alternateInBetweenGrid2 == 1)               # If we can move and not set to alternateInBetween 
+        # and (xIndex > 0 and (xIndex % 2) > 0)           # on an alternateInBetween odd numbered (offset) column  
+        # and (xIndex >= xAxisCount - 1)) :               # on the last position as an alternateInBetween which has 1 less row
+        #     yPosGrid2 = yPosGrid2 + spaceBetweenYGrid2  # Bump up the Y position to the next row
+        #     #xPosGrid2 = startXGrid2                     # Set the X position back to the start of a non alternateInBetween
+        #     device.log(message='alternateInBetweenGrid2 last row', message_type='success')
 
-        elif canMove :
+        # elif canMove :
+        if canMove :
             if (startOfXSlopeGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
                 hypotenuseGrid2 = xPosGrid2 - startOfXSlopeGrid2
                 addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
