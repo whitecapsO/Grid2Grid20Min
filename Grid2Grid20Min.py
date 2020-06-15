@@ -91,15 +91,15 @@ yPosGrid2 = startYGrid2
 zPosGrid2 = startZGrid2
 
 # Get sequence IDs if name given
-# if sequenceAfter1stGridMove != "":
-#     sequenceAfter1stGridMoveId = app.find_sequence_by_name(name=sequenceAfter1stGridMove)
-# else :
-#     sequenceAfter1stGridMoveId = 0
+if sequenceAfter1stGridMove != "":
+    sequenceAfter1stGridMoveId = app.find_sequence_by_name(name=sequenceAfter1stGridMove)
+else :
+    sequenceAfter1stGridMoveId = 0
 
-# if sequenceAfter2ndGridMove != "":
-#     sequenceAfter2ndGridMoveId = app.find_sequence_by_name(name=sequenceAfter2ndGridMove)
-# else :
-#     sequenceAfter2ndGridMoveId = 0
+if sequenceAfter2ndGridMove != "":
+    sequenceAfter2ndGridMoveId = app.find_sequence_by_name(name=sequenceAfter2ndGridMove)
+else :
+    sequenceAfter2ndGridMoveId = 0
 
 # Get the current position for x and y from the config
 with open(configFileName, 'r') as f:
@@ -129,32 +129,32 @@ for yIndex in range(yAxisCount):
         xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
         xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
         # Set X coordinates
-        # if alternateInBetweenGrid1 == 1 :
-        #     if xIndex > 0 and (xIndex % 2) > 0 :
-        #         xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * 0.5) + (spaceBetweenXGrid1 * xIndex)
-        #     else :
-        #         xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
-        # else :
-        #     xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
+        if alternateInBetweenGrid1 == 1 :
+            if xIndex > 0 and (xIndex % 2) > 0 :
+                xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * 0.5) + (spaceBetweenXGrid1 * xIndex)
+            else :
+                xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
+        else :
+            xPosGrid1 = startXGrid1 + (spaceBetweenXGrid1 * xIndex)
 
-        # if alternateInBetweenGrid2 == 1 :
-        #     if xIndex > 0 and (xIndex % 2) > 0 :
-        #         xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * 0.5) + (spaceBetweenXGrid2 * xIndex)
-        #     else :
-        #         xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
-        # else :
-        #     xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
+        if alternateInBetweenGrid2 == 1 :
+            if xIndex > 0 and (xIndex % 2) > 0 :
+                xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * 0.5) + (spaceBetweenXGrid2 * xIndex)
+            else :
+                xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
+        else :
+            xPosGrid2 = startXGrid2 + (spaceBetweenXGrid2 * xIndex)
 
         # Grid 1
-        # if ((alternateInBetweenGrid1 == 1)              # If we can move and not set to alternateInBetween 
-        # and (xIndex > 0 and (xIndex % 2) > 0)           # on an alternateInBetween odd numbered (offset) column  
-        # and (xIndex >= xAxisCount - 1)) :               # on the last position as an alternateInBetween which has 1 less row
-        #     yPosGrid1 = yPosGrid1 + spaceBetweenYGrid1  # Bump up the Y position to the next row
-        #     #xPosGrid1 = startXGrid1                     # Set the X position back to the start of a non alternateInBetween
-        #     device.log(message='alternateInBetweenGrid1 last row', message_type='success')
+        if ((alternateInBetweenGrid1 == 1)              # If we can move and not set to alternateInBetween 
+        and (xIndex > 0 and (xIndex % 2) > 0)           # on an alternateInBetween odd numbered (offset) column  
+        and (xIndex >= xAxisCount - 1)) :               # on the last position as an alternateInBetween which has 1 less row
+            yPosGrid1 = yPosGrid1 + spaceBetweenYGrid1  # Bump up the Y position to the next row
+            #xPosGrid1 = startXGrid1                     # Set the X position back to the start of a non alternateInBetween
+            device.log(message='alternateInBetweenGrid1 last row', message_type='success')
 
-        # elif canMove :
-        if canMove :
+        elif canMove :
+        #if canMove :
             # if (startOfXSlopeGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
             #     hypotenuseGrid1 = xPosGrid1 - startOfXSlopeGrid1
             #     addToZHeightGrid1 = sineOfAngleXGrid1 * hypotenuseGrid1
@@ -170,20 +170,20 @@ for yIndex in range(yAxisCount):
                     'args': {'x': 0, 'y': 0, 'z': 0}
                 }
             )
-            # if sequenceAfter1stGridMove != "":
-            #     device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
-            #     device.execute(sequenceAfter1stGridMoveId)
+            if sequenceAfter1stGridMove != "":
+                device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
+                device.execute(sequenceAfter1stGridMoveId)
 
         # Grid 2
-        # if((alternateInBetweenGrid2 == 1)               # If we can move and not set to alternateInBetween 
-        # and (xIndex > 0 and (xIndex % 2) > 0)           # on an alternateInBetween odd numbered (offset) column  
-        # and (xIndex >= xAxisCount - 1)) :               # on the last position as an alternateInBetween which has 1 less row
-        #     yPosGrid2 = yPosGrid2 + spaceBetweenYGrid2  # Bump up the Y position to the next row
-        #     #xPosGrid2 = startXGrid2                     # Set the X position back to the start of a non alternateInBetween
-        #     device.log(message='alternateInBetweenGrid2 last row', message_type='success')
+        if((alternateInBetweenGrid2 == 1)               # If we can move and not set to alternateInBetween 
+        and (xIndex > 0 and (xIndex % 2) > 0)           # on an alternateInBetween odd numbered (offset) column  
+        and (xIndex >= xAxisCount - 1)) :               # on the last position as an alternateInBetween which has 1 less row
+            yPosGrid2 = yPosGrid2 + spaceBetweenYGrid2  # Bump up the Y position to the next row
+            #xPosGrid2 = startXGrid2                     # Set the X position back to the start of a non alternateInBetween
+            device.log(message='alternateInBetweenGrid2 last row', message_type='success')
 
-        # elif canMove :
-        if canMove :
+        elif canMove :
+        #if canMove :
             # if (startOfXSlopeGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
             #     hypotenuseGrid2 = xPosGrid2 - startOfXSlopeGrid2
             #     addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
@@ -199,9 +199,9 @@ for yIndex in range(yAxisCount):
                     'args': {'x': 0, 'y': 0, 'z': 0}
                 }
             ) 
-            # if sequenceAfter2ndGridMove != "":
-            #     device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
-            #     device.execute(sequenceAfter2ndGridMoveId)
+            if sequenceAfter2ndGridMove != "":
+                device.log(message='Execute sequence: ' + sequenceAfter2ndGridMove, message_type='success')
+                device.execute(sequenceAfter2ndGridMoveId)
 
             moveCount += 1 # **** check this works with alternate inbetween and you don't end up loosing a or gaining an extra move
 
