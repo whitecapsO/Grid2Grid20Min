@@ -4,7 +4,7 @@
 	"author": "whitecapsO",
 	"description": "Generic Farmware function to move between two grids each move completed within 20 minutes",
 	"farmware_manifest_version": "2.0.0",
-	"package_version": "1.0.33",
+	"package_version": "1.0.34",
 	"farmbot_os_version_requirement": ">= 8.0.0",
 	"url": "https://raw.githubusercontent.com/whitecapsO/Grid2Grid20Min/master/manifest.json",
 	"zip": "https://github.com/whitecapsO/Grid2Grid20Min/archive/master.zip",
