@@ -155,9 +155,9 @@ for yIndex in range(yAxisCount):
 
         # elif canMove :
         if canMove :
-            if (startOfXSlopeGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
-                hypotenuseGrid1 = xPosGrid1 - startOfXSlopeGrid1
-                addToZHeightGrid1 = sineOfAngleXGrid1 * hypotenuseGrid1
+            # if (startOfXSlopeGrid1 != 0) and (sineOfAngleXGrid1 != 0) :
+            #     hypotenuseGrid1 = xPosGrid1 - startOfXSlopeGrid1
+            #     addToZHeightGrid1 = sineOfAngleXGrid1 * hypotenuseGrid1
 
             device.move_absolute(
                 {
@@ -184,9 +184,9 @@ for yIndex in range(yAxisCount):
 
         # elif canMove :
         if canMove :
-            if (startOfXSlopeGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
-                hypotenuseGrid2 = xPosGrid2 - startOfXSlopeGrid2
-                addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
+            # if (startOfXSlopeGrid2 != 0) and (sineOfAngleXGrid2 != 0) :
+            #     hypotenuseGrid2 = xPosGrid2 - startOfXSlopeGrid2
+            #     addToZHeightGrid2 = sineOfAngleXGrid2 * hypotenuseGrid2
 
             device.move_absolute(
                 {
