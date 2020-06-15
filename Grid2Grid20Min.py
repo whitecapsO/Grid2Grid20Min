@@ -87,15 +87,15 @@ xPosGrid2 = startXGrid2
 yPosGrid2 = startYGrid2
 
 # Get sequence IDs if name given
-# if sequenceAfter1stGridMove != "" :
-#     sequenceAfter1stGridMoveId = app.find_sequence_by_name(name=sequenceAfter1stGridMove)
-# else :
-#     sequenceAfter1stGridMoveId = 0
+if sequenceAfter1stGridMove != "" :
+    sequenceAfter1stGridMoveId = app.find_sequence_by_name(name=sequenceAfter1stGridMove)
+else :
+    sequenceAfter1stGridMoveId = 0
 
-# if sequenceAfter2ndGridMove != "" :
-#     sequenceAfter2ndGridMoveId = app.find_sequence_by_name(name=sequenceAfter2ndGridMove)
-# else :
-#     sequenceAfter2ndGridMoveId = 0
+if sequenceAfter2ndGridMove != "" :
+    sequenceAfter2ndGridMoveId = app.find_sequence_by_name(name=sequenceAfter2ndGridMove)
+else :
+    sequenceAfter2ndGridMoveId = 0
 
 # Get the current position for x and y from the config
 with open(configFileName, 'r') as f:
