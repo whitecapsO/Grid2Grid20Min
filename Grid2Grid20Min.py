@@ -86,8 +86,6 @@ yPosGrid1 = startYGrid1
 xPosGrid2 = startXGrid2
 yPosGrid2 = startYGrid2
 
-device.log(message='sequenceAfter1stGridMove: ' + sequenceAfter1stGridMove + ' sequenceAfter2ndGridMove:' + sequenceAfter1stGridMove, message_type='success')
-
 # Get sequence IDs if name given
 if sequenceAfter1stGridMove == "NULL" :
     sequenceAfter1stGridMoveId = 0
@@ -98,6 +96,8 @@ if sequenceAfter2ndGridMove == "NULL" :
     sequenceAfter2ndGridMoveId = 0
 else :
     sequenceAfter2ndGridMoveId = app.find_sequence_by_name(name=sequenceAfter2ndGridMove)
+
+device.log(message='sequenceAfter1stGridMoveId: ' + str(sequenceAfter1stGridMoveId) + ' sequenceAfter2ndGridMoveId:' + str(sequenceAfter2ndGridMoveId), message_type='success')
 
 # Get the current position for x and y from the config
 with open(configFileName, 'r') as f:
