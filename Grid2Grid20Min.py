@@ -4,6 +4,7 @@ from farmware_tools import env
 from farmware_tools import get_config_value
 import json
 import os
+import time
 
 # Rewrite of Grid2Grid to run in 20 minutes due to limitations put on Farmware 
 # i.e. Farmware can only run for 20 minutes and there is a 2 second delay between device calls
@@ -158,6 +159,7 @@ for yIndex in range(yAxisCount):
             if sequenceAfter1stGridMoveId > 0 :
                 device.log(message='Execute sequence: ' + sequenceAfter1stGridMove, message_type='success')
                 device.execute(sequenceAfter1stGridMoveId)
+                time.sleep(30)
 
         # Grid 2
         if alternateInBetweenGrid2 == 1 :
