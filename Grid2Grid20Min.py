@@ -6,6 +6,11 @@ import json
 import os
 import time
 
+# TODO ensure grids of different numbers of rows and columns
+# Change to numberOfMoves, grid1XPositions, grid1YPositions, grid2XPositions, grid2YPositions 
+# then fill two one dimentional arrays sixe of the numberOfMoves containing the coordinates for the grids
+# then have one loop that indexes both arrays
+
 # Rewrite of Grid2Grid to run in 20 minutes due to limitations put on Farmware 
 # i.e. Farmware can only run for 20 minutes and there is a 2 second delay between device calls
 # the only way to loop is to use sequence recursion at the end of each row 
